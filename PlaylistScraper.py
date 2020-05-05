@@ -1,4 +1,4 @@
-﻿import os
+import os
 import tkinter as tk
 import tkinter.messagebox
 import tkinter.filedialog
@@ -54,7 +54,7 @@ def download_api_mp3(url, path):
                 f.write(chunk)
     return
 
-def download_thread(folder_path, url_path, permalink):
+def playlist_download_thread(folder_path, url_path, permalink):
     playlists_url = "https://api.soundcloud.com/users/{}/playlists.json{}".format(permalink, APPENDUM)
     playlist_json_list = request_api_data_json(playlists_url)
     for playlist in playlist_json_list:
@@ -76,7 +76,7 @@ def start(folder_path_entry, url_path_entry):
 
     if folder_path and url_path:
         permalink = url_path.split("/")[-1]
-        threading.Thread(target=download_thread, args=(folder_path, url_path, permalink)).start()
+        threading.Thread(target=playlist_download_thread, args=(folder_path, url_path, permalink)).start()
     else:
         tk.messagebox.showwarning(title="Incomplete user fields", message="Please fill out both fields correctly.")
         return
