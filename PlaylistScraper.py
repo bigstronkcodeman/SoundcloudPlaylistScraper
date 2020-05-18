@@ -13,12 +13,12 @@ CLIENT_ID = "2412b70da476791567d496f0f3c26b88"
 APPENDUM = "?client_id=" + CLIENT_ID
 
 class GUI:
-    def __init__(self, flowFunc):
+    def __init__(self, beginFunc):
         self.w = tk.Tk()
         self.w.title("Download Ur Music")
-        self.init_widgets(flowFunc)
+        self.init_widgets(beginFunc)
 
-    def init_widgets(self, flowFunc):
+    def init_widgets(self, beginFunc):
         tk.Label(self.w, text="Enter filepath to save your music to: ").grid(row=0)
         tk.Label(self.w, text="Enter url to extract songs from: ").grid(row=1)
 
@@ -29,7 +29,7 @@ class GUI:
 
         self.img = ImageTk.PhotoImage(Image.open("folder.png").resize((15, 15), Image.ANTIALIAS))
         self.folder_button = tk.Button(self.w, image=self.img, height=20, width=20, command=self.fileDialogButton).grid(row=0, column=2, padx=10)
-        self.start_button = tk.Button(self.w, text="BEGIN", command=partial(flowFunc, self.folder_path_entry, self.url_path_entry)).grid(row=2)
+        self.start_button = tk.Button(self.w, text="BEGIN", command=partial(beginFunc, self.folder_path_entry, self.url_path_entry)).grid(row=2)
 
     def fileDialogButton(self):
         save_file_directory = tkinter.filedialog.askdirectory()
