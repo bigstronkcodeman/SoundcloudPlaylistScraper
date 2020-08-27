@@ -15,7 +15,7 @@ APPENDUM = "?client_id=" + CLIENT_ID
 class GUI:
     def __init__(self, beginFunc):
         self.w = tk.Tk()
-        self.w.title("Download Ur Music")
+        self.w.title("Download Your Music")
         self.init_widgets(beginFunc)
 
     def init_widgets(self, beginFunc):
