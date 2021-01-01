@@ -38,6 +38,10 @@ class GUI:
         save_file_directory = tkinter.filedialog.askdirectory()
         self.folder_path_entry.insert(0, save_file_directory)
 
+def rem_bad_chars(fname):
+    for c in [ "<", ">", ":", "\"", "/", "\\", "|", "?", "*" ]:
+        fname = fname.replace(c, " ")
+    return fname
 
 def extractValidUrl(url):
     rgx = re.search('^(http://|https://|)soundcloud.com/\w+', url)
@@ -76,16 +80,14 @@ def playlist_download_thread(folder_path, url_path, permalink):
     playlists_url = f"https://api.soundcloud.com/users/{profile_id}/playlists.json{APPENDUM}"
     playlist_json_list = request_api_data_json(playlists_url)
     for playlist in playlist_json_list:
-        playlist_permalink = playlist["permalink"]
+        playlist_title = rem_bad_chars(playlist["title"])
         for track in playlist["tracks"]:
-            track_path = folder_path + "/" + playlist_permalink
+            track_path = folder_path + "/" + playlist_title
             if not os.path.isdir(track_path):
                 os.makedirs(track_path)
             if track["streamable"]:
                 print(f"Downloading {track['title']} by {track['user']['username']} in playlist {playlist['title']}...")
-                track_name = track["title"]
-                for c in [ "<", ">", ":", "\"", "/", "\\", "|", "?", "*" ]:
-                    track_name = track_name.replace(c, " ")
+                track_name = rem_bad_chars(track["title"])
                 download_api_mp3(f"{track['stream_url']}{APPENDUM}", track["artwork_url"], track["user"]["username"], f"{track_path}/{track_name}.mp3")
                 print("done.")
     print("All playlists downloaded.")
