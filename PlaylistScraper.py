@@ -65,9 +65,7 @@ def download_api_mp3(audio_url, art_url, artist, path):
     except error:
         pass
     if art_url is not None:
-        to_repl = "large"
-        repl = "t500x500";
-        art_url = repl.join(art_url.rsplit(to_repl, 1)) # get high resolution artwork instead of the one sc wants you to have
+        art_url = "t500x500".join(art_url.rsplit("large", 1)) # get high resolution artwork instead of the shitty low res one sc wants you to have
         img_response = rq.get(art_url, stream=True)
         with open("temp.jpg", "wb") as f:
             shutil.copyfileobj(img_response.raw, f)
